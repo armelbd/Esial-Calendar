@@ -61,7 +61,12 @@ def main(id):
     
     #check if the request is authorized
     if not Request.isRequestAuthorized(id) :
-        return 'Request credit exceeded for this student id', 401 
+        #if credit exceed return the saved calendar
+        calString = Request.pullCalendar(id)
+        if calString is not None :
+            return calString
+        else :
+            return 'Request credit exceeded for this student id', 401 
     
     #ADE requires a cookie handler
     cookieprocessor = urllib2.HTTPCookieProcessor()
