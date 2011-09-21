@@ -93,8 +93,8 @@ def main(id):
         if calString is not None :
             return calString
         else :
-            #We have any calendar save for this student
-            return 'ADE is Down', 502
+            #We have any calendar saved for this student
+            return 'ADE is down or too slow', 502
         
     #Check if the respond is a calendar
     if not re.search("BEGIN:VCALENDAR", calString) :
