@@ -56,7 +56,7 @@ USER_AGENTS = ['Mozilla/5.0 (Windows NT 6.0) AppleWebKit/534.24 \
 def main(id):
     
     #Check that the given parameter is a student id
-    if id == None or not re.match('[0-9]{8}',id):
+    if id == None or not re.match('^[0-9]{8}$',id):
         return 'Bad Request' , 400
     
     #check if the request is authorized
