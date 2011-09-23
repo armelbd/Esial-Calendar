@@ -12,9 +12,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 
 from esialCalendar import app
 from esialCalendar.data.request import Request
+from google.appengine.api import urlfetch
 from random import choice
 import urllib2
 import re
+
+#A hack to change the default 5 seconds timeout to 10 seconds 
+old_fetch = urlfetch.fetch
+def new_fetch(url, payload=None, method='GET', headers={}, allow_truncated=False,
+                follow_redirects=True, deadline=10.0, *args, **kwargs):
+    return old_fetch(url, payload, method, headers, allow_truncated, follow_redirects, 
+                     deadline, *args, **kwargs)
+
+urlfetch.fetch = new_fetch
 
 #A list of browser user agents
 USER_AGENTS = ['Mozilla/5.0 (Windows NT 6.0) AppleWebKit/534.24 \
@@ -46,7 +56,8 @@ USER_AGENTS = ['Mozilla/5.0 (Windows NT 6.0) AppleWebKit/534.24 \
                      .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; Tablet PC 2.0; \
                      .NET CLR 1.1.4322; .NET CLR 3.0.04506; eMusic DLM/4; OfficeLiveConnector.1.3; \
                      OfficeLiveConnector.1.4; OfficeLivePatch.0.0; \
-                     OfficeLivePatch.1.3; SLCC1; .NET4.0C; .NET4.0E; InfoPath.3; Zune 4.7; MS-RTC LM 8; yie8)'
+                     OfficeLivePatch.1.3; SLCC1; .NET4.0C; .NET4.0E; InfoPath.3; \
+                     Zune 4.7; MS-RTC LM 8; yie8)'
                 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; FunWebProducts; SLCC1; \
                     .NET CLR 2.0.50727; Media Center PC 5.0; .NET CLR 3.0.04506; \
                     Windows-Media-Player/10.00.00.3990)'
@@ -104,4 +115,3 @@ def main(id):
     Request.pushCalendar(id, calString)
     
     return calString
-        
