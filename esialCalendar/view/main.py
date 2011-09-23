@@ -10,21 +10,21 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 '''
 
-from esialCalendar import app
-from esialCalendar.data.request import Request
-from google.appengine.api import urlfetch
-from random import choice
-import urllib2
-import re
-
-#A hack to change the default 5 seconds timeout to 10 seconds 
+#A hack to change the default 5 seconds timeout to 10 seconds
+from google.appengine.api import urlfetch 
 old_fetch = urlfetch.fetch
 def new_fetch(url, payload=None, method='GET', headers={}, allow_truncated=False,
                 follow_redirects=True, deadline=10.0, *args, **kwargs):
     return old_fetch(url, payload, method, headers, allow_truncated, follow_redirects, 
                      deadline, *args, **kwargs)
-
+    
 urlfetch.fetch = new_fetch
+
+from esialCalendar import app
+from esialCalendar.data.request import Request
+from random import choice
+import urllib2
+import re
 
 #A list of browser user agents
 USER_AGENTS = ['Mozilla/5.0 (Windows NT 6.0) AppleWebKit/534.24 \
@@ -86,7 +86,7 @@ def main(id):
     
     #Build a request that looks like a browser one
     request = urllib2.Request('https://synchro-edt.uhp-nancy.fr/synchroZimbra/synchro?code=' + 
-                              id +'&projectId=2')
+                             id +'&projectId=2')
     request.add_header('user-agent' , choice(USER_AGENTS))
     request.add_header('Connection', 'keep-alive')
     request.add_header('accept-encoding','gzip,deflate,sdch')
