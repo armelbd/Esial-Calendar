@@ -48,10 +48,11 @@ class Request(db.Model):
             request.put()
             
     @classmethod
-    def pullCalendar(cls,studentId):
+    def pullCalendar(cls,studentId,increment):
         """
         For a given student id return the last saved calendar
-        or None if any calendar save
+        or None if any calendar save.
+        If increment is True increment request count.
         """
         q = db.GqlQuery("SELECT * FROM Request WHERE studentId = :1",int(studentId))
         request = q.get()
@@ -59,6 +60,9 @@ class Request(db.Model):
         if request is None :
             return None
         else :
+            if increment :
+                request.count += 1
+                request.put()
             return request.calSring
         
     @classmethod

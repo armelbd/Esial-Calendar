@@ -73,7 +73,7 @@ def main(id):
     #check if the request is authorized
     if not Request.isRequestAuthorized(id) :
         #if credit exceed return the saved calendar
-        calString = Request.pullCalendar(id)
+        calString = Request.pullCalendar(id,True)
         if calString is not None :
             return calString
         else :
@@ -100,7 +100,7 @@ def main(id):
         calString = response.read()
     except Exception :
         #ADE is down, try to get the lastest saved calendar from database
-        calString = Request.pullCalendar(id)
+        calString = Request.pullCalendar(id,True)
         if calString is not None :
             return calString
         else :
