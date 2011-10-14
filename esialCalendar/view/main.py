@@ -10,6 +10,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 '''
 
+"""
 #A hack to change the default 5 seconds timeout to 10 seconds
 from google.appengine.api import urlfetch 
 old_fetch = urlfetch.fetch
@@ -17,8 +18,13 @@ def new_fetch(url, payload=None, method='GET', headers={}, allow_truncated=False
                 follow_redirects=True, deadline=10.0, *args, **kwargs):
     return old_fetch(url, payload, method, headers, allow_truncated, follow_redirects, 
                      deadline, *args, **kwargs)
-    
+                     
 urlfetch.fetch = new_fetch
+"""
+from google.appengine.api import urlfetch
+urlfetch.set_default_fetch_deadline(10)
+    
+
 
 from esialCalendar import app
 from esialCalendar.data.request import Request
