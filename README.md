@@ -6,7 +6,7 @@ Une fois configuré Google updatera 2/3 fois par jour votre agenda, ce qui perme
 **Comment le configurer :**
 
 Pour configurer la synchronisation il suffit de vous rendre dans votre agenda google et de cliquer sur la flèche à côté de "Autres Agendas" puis sur "Ajouter par URL" et de rentrer cette url :
-http://esialcalendar.appspot.com/num_etudiant
+http://esialcalendar.appspot.com/num_etudiant/2012
 
 **Comment ça marche :**
 

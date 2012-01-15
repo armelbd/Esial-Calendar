@@ -126,7 +126,7 @@ def oldUrl(id):
     return main(id)
 
 #A second URL to hack google calendar    
-@app.route('/2012/<id>',methods=['GET'])
+@app.route('/<id>/2012',methods=['GET'])
 def newUrl(id):
     return main(id)
   
