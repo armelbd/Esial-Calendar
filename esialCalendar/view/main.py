@@ -18,6 +18,7 @@ urlfetch.set_default_fetch_deadline(10)
 from esialCalendar import app
 from esialCalendar.data.request import Request
 from random import choice
+from flask import make_response
 import urllib2
 import re
 
@@ -56,9 +57,8 @@ USER_AGENTS = ['Mozilla/5.0 (Windows NT 6.0) AppleWebKit/534.24 \
                 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; FunWebProducts; SLCC1; \
                     .NET CLR 2.0.50727; Media Center PC 5.0; .NET CLR 3.0.04506; \
                     Windows-Media-Player/10.00.00.3990)'
-                ]
-    
-@app.route('/<id>',methods=['GET'])
+                ]  
+
 def main(id):
     
     #Check that the given parameter is a student id
@@ -97,7 +97,12 @@ def main(id):
         #ADE is down, try to get the lastest saved calendar from database
         calString = Request.pullCalendar(id,True)
         if calString is not None :
-            return calString
+            resp = make_response(calString)
+            resp.headers['Cache-Control'] = 'no-cache'
+            resp.headers['Content-Type'] = 'text/calendar;charset=UTF-8'
+            resp.headers['Content-disposition'] = 'inline; filename=' + id +'.ics'
+            resp.headers['Pragma'] = 'no-cache'           
+            return resp
         else :
             #We have any calendar saved for this student
             return 'ADE is down or too slow', 502
@@ -109,4 +114,20 @@ def main(id):
     #save the calendar into the database
     Request.pushCalendar(id, calString)
     
-    return calString
+    resp = make_response(calString)
+    resp.headers['Cache-Control'] = 'no-cache'
+    resp.headers['Content-Type'] = 'text/calendar;charset=UTF-8'
+    resp.headers['Content-disposition'] = 'inline; filename=' + id +'.ics'
+    resp.headers['Pragma'] = 'no-cache'           
+    return resp
+
+@app.route('/<id>',methods=['GET'])
+def oldUrl(id):
+    return main(id)
+
+#A second URL to hack google calendar    
+@app.route('/2012/<id>',methods=['GET'])
+def newUrl(id):
+    return main(id)
+  
+ 
